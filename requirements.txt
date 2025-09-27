@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+sentence-transformers
+torch
+pdfplumber
+python-docx
+python-multipart
+streamlit
+requests
+pytest
+PyPDF2
