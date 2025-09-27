@@ -10,17 +10,24 @@ def test_root():
     assert "status" in response.json()
 
 def test_screen_resume():
-    # Prepare a dummy CV file
+    # Dummy CV content
     cv_content = b"My name is John Doe. I am a Python developer."
+    
+    # Create a fresh BytesIO object for each request
     file_obj = BytesIO(cv_content)
-
-    # files is a dict: key = parameter name in endpoint
-    files = {"file": ("dummy_cv.txt", file_obj, "text/plain")}
-
-    data = {"job_description": "Looking for a Python developer"}
-
-    # POST request to /screen endpoint
+    
+    # FastAPI expects a tuple: (filename, fileobj, content_type)
+    files = {
+        "file": ("dummy_cv.txt", file_obj, "text/plain")
+    }
+    
+    # Form field
+    data = {
+        "job_description": "Looking for a Python developer"
+    }
+    
     response = client.post("/screen", files=files, data=data)
-
+    
+    # Assert successful response
     assert response.status_code == 200
     assert "similarity_score" in response.json()
