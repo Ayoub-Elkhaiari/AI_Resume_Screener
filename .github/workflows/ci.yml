@@ -25,7 +25,8 @@ jobs:
           pip install pytest
 
       - name: Run tests
-        run: pytest app/tests/
+        run: |
+              PYTHONPATH=$PWD pytest app/tests/
 
   docker:
     runs-on: ubuntu-latest

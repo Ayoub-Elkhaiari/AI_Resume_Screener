@@ -9,3 +9,4 @@ streamlit
 requests
 pytest
 PyPDF2
+httpx
