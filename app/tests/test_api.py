@@ -6,16 +6,20 @@ client = TestClient(app)
 def test_root():
     response = client.get("/")
     assert response.status_code == 200
-    assert "message" in response.json()
+    assert "status" in response.json()
 
-def test_similarity():
-    payload = {"cv_text": "Python developer", "job_text": "Looking for Python skills"}
-    response = client.post("/similarity", json=payload)
-    assert response.status_code == 200
-    assert "similarity" in response.json()
+def test_screen_resume():
+    # Prepare a dummy CV file
+    from io import BytesIO
+    cv_content = b"My name is John Doe. I am a Python developer."
+    file = BytesIO(cv_content)
+    file.name = "dummy_cv.txt"
 
-def test_score():
-    payload = {"cv_text": "Machine learning engineer", "job_text": "AI engineer with ML experience"}
-    response = client.post("/score", json=payload)
+    payload = {
+        "job_description": "Looking for a Python developer",
+        "file": file
+    }
+
+    response = client.post("/screen", files={"file": (file.name, file, "text/plain")}, data={"job_description": "Looking for a Python developer"})
     assert response.status_code == 200
-    assert "score" in response.json()
+    assert "similarity_score" in response.json()
